@@ -1,0 +1,124 @@
+<xsd:schema xmlns="urn:fdc:difi.no:2019:data:Skos-1"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="urn:fdc:difi.no:2019:data:Skos-1"
+            elementFormDefault="qualified" version="1.0">
+
+    <xsd:element name="Skos" type="SkosType"/>
+    <xsd:element name="Config" type="ConfigType"/>
+    <xsd:element name="Collection" type="CollectionType"/>
+    <xsd:element name="Concept" type="ConceptType"/>
+    <xsd:element name="ConceptScheme" type="ConceptSchemeType"/>
+
+    <xsd:complexType name="SkosType">
+        <xsd:sequence>
+            <xsd:element ref="Config" minOccurs="0"/>
+            <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                <xsd:element ref="Collection"/>
+                <xsd:element ref="Concept"/>
+                <xsd:element ref="ConceptScheme"/>
+            </xsd:choice>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ConfigType">
+        <xsd:sequence>
+            <xsd:element name="Name" type="xsd:string"/>
+            <xsd:element name="BaseURI" type="xsd:anyURI"/>
+            <xsd:element name="Options" type="OptionsType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="BaseType" abstract="true">
+        <xsd:sequence>
+            <!-- Notation -->
+            <xsd:element name="Notation" type="xsd:token" minOccurs="0" maxOccurs="unbounded"/>
+            <!-- Label -->
+            <xsd:element name="PrefLabel" type="TranslatableStringType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="AltLabel" type="TranslatableStringType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="HiddenLabel" type="TranslatableStringType" minOccurs="0" maxOccurs="unbounded"/>
+            <!-- Documentation -->
+            <xsd:element name="Note" type="TranslatableStringType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="ChangeNote" type="TranslatableStringType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="Definition" type="TranslatableStringType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="EditorialNote" type="TranslatableStringType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="Example" type="TranslatableStringType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="HistoryNote" type="TranslatableStringType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="ScopeNote" type="TranslatableStringType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="path" type="xsd:token" use="required"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="CollectionType">
+        <xsd:complexContent>
+            <xsd:extension base="BaseType">
+                <xsd:sequence>
+                    <xsd:element name="Member" type="xsd:token" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="ConceptType">
+        <xsd:complexContent>
+            <xsd:extension base="BaseType">
+                <xsd:sequence>
+                    <!-- Scheme -->
+                    <xsd:element name="InScheme" type="xsd:token" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="TopConceptOf" type="xsd:token" minOccurs="0" maxOccurs="unbounded"/>
+                    <!-- Relation -->
+                    <xsd:element name="SemanticRelation" type="xsd:token" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="Related" type="xsd:token" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="Broader" type="xsd:token" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="Narrower" type="xsd:token" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="BroaderTransitive" type="xsd:token" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="NarrowerTransitive" type="xsd:token" minOccurs="0" maxOccurs="unbounded"/>
+                    <!-- Mapping -->
+                    <xsd:element name="MappingRelation" type="xsd:anyURI" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="CloseMatch" type="xsd:anyURI" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="ExactMatch" type="xsd:anyURI" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="BroadMatch" type="xsd:anyURI" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="NarrowMatch" type="xsd:anyURI" minOccurs="0" maxOccurs="unbounded"/>
+                    <xsd:element name="RelatedMatch" type="xsd:anyURI" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="ConceptSchemeType">
+        <xsd:complexContent>
+            <xsd:extension base="BaseType">
+                <xsd:sequence>
+                    <!-- Scheme -->
+                    <xsd:element name="HasTopConcept" type="xsd:token" minOccurs="0" maxOccurs="unbounded"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <!-- Options -->
+
+    <xsd:complexType name="OptionsType">
+        <xsd:sequence>
+            <xsd:element name="Option" type="OptionType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="key" type="xsd:token" use="required"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="OptionType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="key" type="xsd:token" use="required"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <!-- Translated value -->
+    <xsd:complexType name="TranslatableStringType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="lang" type="xsd:token"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+</xsd:schema>
