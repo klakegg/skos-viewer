@@ -1,6 +1,7 @@
 package no.difi.data.skos.viewer.schematron;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
@@ -26,11 +27,14 @@ import java.nio.file.Path;
 public class SchematronFactory {
 
     @Inject
+    private Injector injector;
+
+    @Inject
     private Processor processor;
 
     @Inject
     @Named("schematron-step3")
-    private Provider<XsltExecutable> xsltExecutable;
+    private Provider<XsltExecutable> schStep3Executable;
 
     public SchematronProcessor create(Path path) throws SkosException, IOException {
         try (InputStream inputStream = Files.newInputStream(path)) {
@@ -46,7 +50,7 @@ public class SchematronFactory {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-            XsltTransformer xsltTransformer = xsltExecutable.get().load();
+            XsltTransformer xsltTransformer = schStep3Executable.get().load();
             xsltTransformer.setSource(source);
             xsltTransformer.setDestination(processor.newSerializer(baos));
             xsltTransformer.transform();
@@ -57,7 +61,9 @@ public class SchematronFactory {
                 validation = processor.newXsltCompiler().compile(new StreamSource(is));
             }
 
-            return new SchematronProcessor(validation);
+            SchematronProcessor schematronProcessor = new SchematronProcessor(validation);
+            injector.injectMembers(schematronProcessor);
+            return schematronProcessor;
         } catch (SaxonApiException e) {
             throw new SkosException(e.getMessage(), e);
         }

@@ -1,0 +1,23 @@
+<xsd:schema xmlns="urn:fdc:difi.no:2019:data:Validation-1"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="urn:fdc:difi.no:2019:data:Validation-1"
+            elementFormDefault="qualified" version="1.0">
+
+    <xsd:element name="Result" type="ResultType"/>
+
+    <xsd:complexType name="ResultType">
+        <xsd:sequence>
+            <xsd:element name="FailedAssert" type="FailedAssertType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="FailedAssertType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attribute name="id" type="xsd:token"/>
+                <xsd:attribute name="flag" type="xsd:token"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+</xsd:schema>

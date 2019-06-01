@@ -23,10 +23,18 @@ public class SchematronModule extends AbstractModule {
     @Provides
     @Singleton
     @Named("schematron-step3")
-    public XsltExecutable getXsltExecutable(Processor processor) throws SaxonApiException {
+    public XsltExecutable getSchematronStep3(Processor processor) throws SaxonApiException {
         XsltCompiler xsltCompiler = processor.newXsltCompiler();
         xsltCompiler.setURIResolver(new ClasspathUriResolver("/iso-schematron/"));
 
         return xsltCompiler.compile(SourceUtil.classpath("/iso-schematron/iso_svrl_for_xslt2.xsl"));
+    }
+
+    @Provides
+    @Singleton
+    @Named("svrl-parser")
+    public XsltExecutable getSvrlParser(Processor processor) throws SaxonApiException {
+        return processor.newXsltCompiler()
+                .compile(SourceUtil.classpath("/xslt/svrl-parser.xslt"));
     }
 }
