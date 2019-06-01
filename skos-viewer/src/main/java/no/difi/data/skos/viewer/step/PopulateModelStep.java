@@ -21,9 +21,9 @@ import java.nio.file.Paths;
 /**
  * @author erlend
  */
-@Info(weight = 100, title = "generate rdf")
+@Info(weight = 50, title = "populate model")
 @MetaInfServices
-public class GenerateRfdStep implements Step {
+public class PopulateModelStep implements Step {
 
     @Inject
     private Processor processor;
@@ -32,12 +32,11 @@ public class GenerateRfdStep implements Step {
     public void trigger() throws IOException, SkosException {
         try {
             XsltExecutable xsltExecutable = processor.newXsltCompiler()
-                    .compile(SourceUtil.classpath("/xslt/rdf-generate.xslt"));
+                    .compile(SourceUtil.classpath("/xslt/populate-skos.xslt"));
 
-            Path targetFile = Paths.get("target/site/all.rdf");
-            Files.createDirectories(targetFile.getParent());
+            Path targetFile = Paths.get("target/populated.xml");
 
-            try (InputStream inputStream = Files.newInputStream(Paths.get("target/populated.xml"))) {
+            try (InputStream inputStream = Files.newInputStream(Paths.get("target/source.xml"))) {
                 XsltTransformer xsltTransformer = xsltExecutable.load();
                 xsltTransformer.setSource(new StreamSource(inputStream));
                 xsltTransformer.setDestination(processor.newSerializer(targetFile.toFile()));

@@ -53,7 +53,7 @@
                     <xsl:with-param name="tag">hasTopConcept</xsl:with-param>
                 </xsl:call-template>
             </xsl:for-each>
-            
+
             <xsl:call-template name="label"/>
             <xsl:call-template name="documentation"/>
 
