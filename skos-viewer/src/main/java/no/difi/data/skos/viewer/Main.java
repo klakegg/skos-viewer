@@ -14,6 +14,9 @@ import no.difi.data.skos.viewer.converter.Converter;
 import no.difi.data.skos.viewer.io.ResourceFileVisitor;
 import no.difi.data.skos.viewer.io.SkosWriter;
 import no.difi.data.skos.viewer.module.ArgumentsModule;
+import no.difi.data.skos.viewer.schematron.SchematronFactory;
+import no.difi.data.skos.viewer.schematron.SchematronProcessor;
+import no.difi.data.skos.viewer.xml.SourceUtil;
 import org.yaml.snakeyaml.Yaml;
 
 import javax.inject.Named;
@@ -38,11 +41,14 @@ public class Main {
     private Converter converter;
 
     @Inject
-    @Named("skos")
+    @Named("skos-v1")
     private JAXBContext jaxbContext;
 
     @Inject
     private Yaml yaml;
+
+    @Inject
+    private SchematronFactory schematronFactory;
 
     public static void main(String... args) throws IOException, SkosException {
         // Find modules
@@ -73,6 +79,10 @@ public class Main {
             for (Path path : ResourceFileVisitor.walk(Paths.get("src"), ".yaml"))
                 writer.add(converter.convert(load(path, path.toString().substring(4, path.toString().length() - 5))));
         }
+
+        SchematronProcessor schematronProcessor = schematronFactory
+                .create(SourceUtil.classpath("/schematron/skos-1.0.sch"));
+        schematronProcessor.validate(Paths.get("target/source.xml"));
     }
 
     protected <T> T load(Path path, Class<T> cls) throws IOException {

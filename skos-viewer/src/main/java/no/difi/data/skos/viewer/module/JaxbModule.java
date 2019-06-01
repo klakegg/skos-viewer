@@ -19,7 +19,7 @@ public class JaxbModule extends AbstractModule {
 
     @Provides
     @Singleton
-    @Named("skos")
+    @Named("skos-v1")
     public JAXBContext getSkosJaxbContext() throws JAXBException {
         return JAXBContext.newInstance(CollectionType.class, ConceptType.class,
                 ConceptSchemeType.class, ConfigType.class, SkosType.class);
