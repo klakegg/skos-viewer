@@ -9,18 +9,26 @@
 
     <pattern>
         <rule context="s:InScheme">
-            <let name="current" value="current()"/>
+            <let name="ref" value="normalize-space(text())"/>
 
             <assert id="SKOS-R001"
-                    test="//s:ConceptScheme[@path = normalize-space($current/text())]"
+                    test="//s:ConceptScheme[@path = $ref]"
                     flag="fatal">Unable to find concept scheme '<value-of select="text()"/>' referenced in '<value-of select="parent::element()/@path"/>'.</assert>
         </rule>
 
         <rule context="s:Broader | s:Narrower | s:BroaderTransitive | s:NarrowerTransitive | s:Related | s:SemanticRelation">
-            <let name="current" value="current()"/>
+            <let name="ref" value="normalize-space(text())"/>
 
             <assert id="SKOS-R002"
-                    test="//s:Concept[@path = normalize-space($current/text())]"
+                    test="//s:Concept[@path = $ref]"
+                    flag="fatal">Unable to find concept '<value-of select="text()"/>' referenced in '<value-of select="parent::element()/@path"/>'.</assert>
+        </rule>
+
+        <rule context="s:Member">
+            <let name="ref" value="normalize-space(text())"/>
+
+            <assert id="SKOS-R003"
+                    test="//s:Concept[@path = $ref] | //s:ConceptScheme[@path = $ref]"
                     flag="fatal">Unable to find concept '<value-of select="text()"/>' referenced in '<value-of select="parent::element()/@path"/>'.</assert>
         </rule>
     </pattern>

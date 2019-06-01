@@ -16,7 +16,9 @@
                 <xsl:sort select="@path"/>
 
                 <xsl:result-document href="{@path}.rdf">
-                    <xsl:apply-templates select="current()"/>
+                    <rdf:RDF>
+                        <xsl:apply-templates select="current()"/>
+                    </rdf:RDF>
                 </xsl:result-document>
 
                 <xsl:apply-templates select="current()"/>
@@ -25,7 +27,9 @@
                 <xsl:sort select="@path"/>
 
                 <xsl:result-document href="{@path}.rdf">
-                    <xsl:apply-templates select="current()"/>
+                    <rdf:RDF>
+                        <xsl:apply-templates select="current()"/>
+                    </rdf:RDF>
                 </xsl:result-document>
 
                 <xsl:apply-templates select="current()"/>
@@ -34,7 +38,9 @@
                 <xsl:sort select="@path"/>
 
                 <xsl:result-document href="{@path}.rdf">
-                    <xsl:apply-templates select="current()"/>
+                    <rdf:RDF>
+                        <xsl:apply-templates select="current()"/>
+                    </rdf:RDF>
                 </xsl:result-document>
 
                 <xsl:apply-templates select="current()"/>
