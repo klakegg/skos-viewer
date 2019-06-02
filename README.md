@@ -1,6 +1,4 @@
-[![Build Status](https://travis-ci.org/difi/data-skos.svg?branch=master)](https://travis-ci.org/difi/data-skos)
-
-# data-skos
+# SKOS Viewer
 
 ## Support
 
