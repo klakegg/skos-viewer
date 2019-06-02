@@ -12,10 +12,8 @@
     <name>SKOS :: Parent</name>
 
     <modules>
-        <module>skos-builder</module>
-        <module>skos-core</module>
-        <module>skos-viewer</module>
         <module>skos-api</module>
+        <module>skos-viewer</module>
     </modules>
 
     <properties>
@@ -52,11 +50,6 @@
             <dependency>
                 <groupId>no.difi.data</groupId>
                 <artifactId>skos-api</artifactId>
-                <version>0.9.0-SNAPSHOT</version>
-            </dependency>
-            <dependency>
-                <groupId>no.difi.data</groupId>
-                <artifactId>skos-core</artifactId>
                 <version>0.9.0-SNAPSHOT</version>
             </dependency>
 

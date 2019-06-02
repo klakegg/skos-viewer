@@ -26,6 +26,8 @@ public class Converter {
             //noinspection Java8MapForEach
             source.getOptions().get(optionsKey).entrySet()
                     .forEach(e -> optionsType.getOption().add(getOption(e.getKey(), e.getValue())));
+
+            target.getOptions().add(optionsType);
         }
 
         return OBJECT_FACTORY.createConfig(target);

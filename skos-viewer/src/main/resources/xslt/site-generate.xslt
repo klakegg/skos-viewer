@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="2.0"
                 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:skos="http://www.w3.org/2004/02/skos/core#"
                 xmlns:s="urn:fdc:difi.no:2019:data:Skos-1"
                 exclude-result-prefixes="s">
 
-    <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
+    <xsl:output method="html" version="5.0" encoding="UTF-8" indent="yes" />
 
     <xsl:variable name="config" select="//s:Config[1]"/>
-    <!-- <xsl:variable name="root" select="if ($config/s:Options[@key = 'site']/s:Option[@key = 'root']) then $config/s:Options[@key = 'site']/s:Option[@key = 'root'] else '/'"/> -->
-    <xsl:variable name="root">/los/target/site/</xsl:variable>
+    <xsl:variable name="root" select="if ($config/s:Options[@key = 'site']/s:Option[@key = 'root']) then $config/s:Options[@key = 'site']/s:Option[@key = 'root'] else '/'"/>
     <xsl:variable name="lang" select="if ($config/s:Options[@key = 'site']/s:Option[@key = 'lang']) then $config/s:Options[@key = 'site']/s:Option[@key = 'lang'] else 'nb'"/>
     <xsl:variable name="baseuri" select="$config/s:BaseURI/text()"/>
 
