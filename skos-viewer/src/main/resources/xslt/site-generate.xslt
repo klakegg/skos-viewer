@@ -77,17 +77,35 @@
             <small class="h3 text-muted">Home</small>
         </h1>
 
-        <ul>
+        <xsl:variable name="conceptschemes">
             <xsl:for-each select="s:ConceptScheme">
                 <xsl:sort select="s:PrefLabel[@lang=$lang]"/>
-
-                <li>
-                    <a href="{concat($root, @path, '.html')}">
-                        <xsl:value-of select="s:PrefLabel[@lang=$lang][1]"/>
-                    </a>
-                </li>
+                <xsl:copy-of select="current()"/>
             </xsl:for-each>
-        </ul>
+        </xsl:variable>
+
+        <xsl:variable name="collections">
+            <xsl:for-each select="s:Collection">
+                <xsl:sort select="s:PrefLabel[@lang=$lang]"/>
+                <xsl:copy-of select="current()"/>
+            </xsl:for-each>
+        </xsl:variable>
+
+        <h2 id="content" class="h4 mt-5">Content</h2>
+
+        <xsl:if test="$conceptschemes/* or $collections/*">
+            <dl class="row">
+                <xsl:call-template name="resources_list">
+                    <xsl:with-param name="title">Concept Schemes</xsl:with-param>
+                    <xsl:with-param name="resources" select="$conceptschemes/*"/>
+                </xsl:call-template>
+
+                <xsl:call-template name="resources_list">
+                    <xsl:with-param name="title">Collections</xsl:with-param>
+                    <xsl:with-param name="resources" select="$collections/*"/>
+                </xsl:call-template>
+            </dl>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template match="s:ConceptScheme" mode="page">
@@ -102,10 +120,12 @@
         <dl class="row">
             <dt class="col-sm-2">Identifier</dt>
             <dd class="col-sm-10">
-                <xsl:value-of select="$baseuri"/>
-                <strong>
-                    <xsl:value-of select="@path"/>
-                </strong>
+                <div style="padding-left: 30pt;">
+                    <xsl:value-of select="$baseuri"/>
+                    <strong>
+                        <xsl:value-of select="@path"/>
+                    </strong>
+                </div>
             </dd>
         </dl>
 
@@ -114,7 +134,7 @@
 
         <xsl:choose>
             <xsl:when test="s:HasTopConcept">
-                <h2 id="scheme" class="h4">Scheme</h2>
+                <h2 id="scheme" class="h4 mt-5">Content</h2>
 
                 <dl class="row">
                     <xsl:call-template name="resources">
@@ -123,29 +143,27 @@
                     </xsl:call-template>
                 </dl>
             </xsl:when>
-            <xsl:otherwise>
-                <ul>
+            <xsl:when test="//s:Concept[s:InScheme = $current/@path][1]">
+                <h2 id="scheme" class="h4 mt-5">Content</h2>
+
+                <xsl:variable name="resources">
                     <xsl:for-each select="//s:Concept[s:InScheme = $current/@path]">
                         <xsl:sort select="s:PrefLabel[@lang=$lang][1]"/>
-
-                        <li>
-                            <a href="{concat($root, @path, '.html')}">
-                                <xsl:value-of select="s:PrefLabel[@lang=$lang][1]"/>
-                            </a>
-                        </li>
+                        <xsl:copy-of select="current()"/>
                     </xsl:for-each>
-                </ul>
-            </xsl:otherwise>
-        </xsl:choose>
+                </xsl:variable>
 
-        <!-- <rdf:Description>
-            <xsl:attribute name="rdf:about" select="concat($config/s:BaseURI, @path)"/>
-        </rdf:Description> -->
+                <dl class="row">
+                    <xsl:call-template name="resources_list">
+                        <xsl:with-param name="title">Instances</xsl:with-param>
+                        <xsl:with-param name="resources" select="$resources/*"/>
+                    </xsl:call-template>
+                </dl>
+            </xsl:when>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="s:Concept" mode="page">
-        <xsl:variable name="current" select="."/>
-
         <h1 class="mb-4">
             <xsl:value-of select="s:PrefLabel[@lang=$lang]"/>
             <br/>
@@ -155,10 +173,12 @@
         <dl class="row">
             <dt class="col-sm-2">Identifier</dt>
             <dd class="col-sm-10">
-                <xsl:value-of select="$baseuri"/>
-                <strong>
-                    <xsl:value-of select="@path"/>
-                </strong>
+                <div style="padding-left: 30pt;">
+                    <xsl:value-of select="$baseuri"/>
+                    <strong>
+                        <xsl:value-of select="@path"/>
+                    </strong>
+                </div>
             </dd>
 
             <xsl:call-template name="resources">
@@ -186,71 +206,70 @@
         <dl class="row">
             <dt class="col-sm-2">Identifier</dt>
             <dd class="col-sm-10">
-                <xsl:value-of select="$baseuri"/>
-                <strong>
-                    <xsl:value-of select="@path"/>
-                </strong>
+                <div style="padding-left: 30pt;">
+                    <xsl:value-of select="$baseuri"/>
+                    <strong>
+                        <xsl:value-of select="@path"/>
+                    </strong>
+                </div>
             </dd>
         </dl>
 
         <xsl:call-template name="label"/>
         <xsl:call-template name="documentation"/>
 
-        <h2 id="members" class="h4">Members</h2>
+        <xsl:if test="s:Member">
+            <h2 id="members" class="h4 mt-5">Members</h2>
 
-        <!-- <rdf:Description>
-            <xsl:attribute name="rdf:about" select="concat($config/s:BaseURI, @path)"/>
-
-            <xsl:for-each select="s:Member">
-                <xsl:sort select="text()"/>
-                <xsl:call-template name="resource">
-                    <xsl:with-param name="tag">member</xsl:with-param>
+            <dl class="row">
+                <xsl:call-template name="resources">
+                    <xsl:with-param name="tag">Member</xsl:with-param>
+                    <xsl:with-param name="title">Instances</xsl:with-param>
                 </xsl:call-template>
-            </xsl:for-each>
-
-        </rdf:Description> -->
+            </dl>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template name="documentation">
         <xsl:if test="s:Note | s:ChangeNote | s:Definition | s:EditorialNote | s:Example | s:HistoryNote | s:ScopeNote">
-            <h2 id="documentation" class="h4">Documentation</h2>
-        </xsl:if>
+            <h2 id="documentation" class="h4 mt-5">Documentation</h2>
 
-        <dl class="row">
-            <xsl:call-template name="values">
-                <xsl:with-param name="tag">Note</xsl:with-param>
-                <xsl:with-param name="title">Note</xsl:with-param>
-            </xsl:call-template>
-            <xsl:call-template name="values">
-                <xsl:with-param name="tag">ChangeNote</xsl:with-param>
-                <xsl:with-param name="title">Change Note</xsl:with-param>
-            </xsl:call-template>
-            <xsl:call-template name="values">
-                <xsl:with-param name="tag">Definition</xsl:with-param>
-                <xsl:with-param name="title">Definition</xsl:with-param>
-            </xsl:call-template>
-            <xsl:call-template name="values">
-                <xsl:with-param name="tag">EditorialNote</xsl:with-param>
-                <xsl:with-param name="title">Editorial Note</xsl:with-param>
-            </xsl:call-template>
-            <xsl:call-template name="values">
-                <xsl:with-param name="tag">Example</xsl:with-param>
-                <xsl:with-param name="title">Example</xsl:with-param>
-            </xsl:call-template>
-            <xsl:call-template name="values">
-                <xsl:with-param name="tag">HistoryNote</xsl:with-param>
-                <xsl:with-param name="title">History Note</xsl:with-param>
-            </xsl:call-template>
-            <xsl:call-template name="values">
-                <xsl:with-param name="tag">ScopeNote</xsl:with-param>
-                <xsl:with-param name="title">Scope Note</xsl:with-param>
-            </xsl:call-template>
-        </dl>
+            <dl class="row">
+                <xsl:call-template name="values">
+                    <xsl:with-param name="tag">Note</xsl:with-param>
+                    <xsl:with-param name="title">Note</xsl:with-param>
+                </xsl:call-template>
+                <xsl:call-template name="values">
+                    <xsl:with-param name="tag">ChangeNote</xsl:with-param>
+                    <xsl:with-param name="title">Change Note</xsl:with-param>
+                </xsl:call-template>
+                <xsl:call-template name="values">
+                    <xsl:with-param name="tag">Definition</xsl:with-param>
+                    <xsl:with-param name="title">Definition</xsl:with-param>
+                </xsl:call-template>
+                <xsl:call-template name="values">
+                    <xsl:with-param name="tag">EditorialNote</xsl:with-param>
+                    <xsl:with-param name="title">Editorial Note</xsl:with-param>
+                </xsl:call-template>
+                <xsl:call-template name="values">
+                    <xsl:with-param name="tag">Example</xsl:with-param>
+                    <xsl:with-param name="title">Example</xsl:with-param>
+                </xsl:call-template>
+                <xsl:call-template name="values">
+                    <xsl:with-param name="tag">HistoryNote</xsl:with-param>
+                    <xsl:with-param name="title">History Note</xsl:with-param>
+                </xsl:call-template>
+                <xsl:call-template name="values">
+                    <xsl:with-param name="tag">ScopeNote</xsl:with-param>
+                    <xsl:with-param name="title">Scope Note</xsl:with-param>
+                </xsl:call-template>
+            </dl>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template name="label">
         <xsl:if test="s:PrefLabel | s:AltLabel | s:HiddenLabel">
-            <h2 id="labels" class="h4">Labels</h2>
+            <h2 id="labels" class="h4 mt-5">Labels</h2>
 
             <dl class="row">
                 <xsl:call-template name="values">
@@ -260,10 +279,12 @@
                 <xsl:call-template name="values">
                     <xsl:with-param name="tag">AltLabel</xsl:with-param>
                     <xsl:with-param name="title">Alternative</xsl:with-param>
+                    <xsl:with-param name="cols">3</xsl:with-param>
                 </xsl:call-template>
                 <xsl:call-template name="values">
                     <xsl:with-param name="tag">HiddenLabel</xsl:with-param>
                     <xsl:with-param name="title">Hidden</xsl:with-param>
+                    <xsl:with-param name="cols">3</xsl:with-param>
                 </xsl:call-template>
             </dl>
         </xsl:if>
@@ -271,7 +292,7 @@
 
     <xsl:template name="mapping">
         <xsl:if test="s:MappingRelation | s:CloseMatch | s:ExactMatch | s:BroadMatch | s:NarrowMatch | s:RelatedMatch">
-            <h2 id="mappings" class="h4">Mappings</h2>
+            <h2 id="mappings" class="h4 mt-5">Mappings</h2>
 
             <dl class="row">
                 <xsl:call-template name="resources">
@@ -304,7 +325,7 @@
 
     <xsl:template name="relation">
         <xsl:if test="s:SemanticRelation | s:Related | s:Broader | s:Narrower | s:BroaderTransitive | s:NarrowerTransitive">
-            <h2 id="relations" class="h4">Relations</h2>
+            <h2 id="relations" class="h4 mt-5">Relations</h2>
 
             <dl class="row">
                 <xsl:call-template name="resources">
@@ -343,6 +364,7 @@
     <xsl:template name="values">
         <xsl:param name="title"/>
         <xsl:param name="tag"/>
+        <xsl:param name="cols" select="1"/>
 
         <xsl:variable name="values">
             <xsl:for-each select="s:*[local-name() = $tag]">
@@ -361,86 +383,125 @@
 
                     <xsl:variable name="lang" select="current()"/>
                     <xsl:variable name="values" select="$values/*[@lang = $lang]"/>
+                    <xsl:variable name="pc" select="ceiling(count($values) div $cols)"/>
 
                     <div style="padding-left: 30pt;">
-                        <span class="badge badge-info" style="margin-top: 2pt; margin-left: -30pt; float: left;"><xsl:value-of select="$lang"/></span>
+                        <span class="badge badge-light" style="margin-top: 2pt; margin-left: -30pt; float: left;"><xsl:value-of select="$lang"/></span>
 
-                        <ul class="mb-0 list-unstyled">
-                            <xsl:for-each select="$values">
-                                <li><xsl:value-of select="current()"/></li>
+                        <div class="row">
+                            <xsl:for-each select="1 to $cols">
+                                <xsl:variable name="pos" select="current()"/>
+                                <div class="col-sm-{12 div $cols}">
+                                    <ul class="mb-0 list-unstyled">
+                                        <xsl:for-each select="$values">
+                                            <xsl:if test="position() &gt; $pc * ($pos - 1) and position() &lt;= $pc * $pos">
+                                                <li><xsl:value-of select="current()"/></li>
+                                            </xsl:if>
+                                        </xsl:for-each>
+                                    </ul>
+                                </div>
                             </xsl:for-each>
-                        </ul>
+                        </div>
                     </div>
                 </xsl:for-each>
             </dd>
         </xsl:if>
     </xsl:template>
 
-    <xsl:template name="value">
-        <xsl:param name="tag"/>
-
-        <xsl:element name="skos:{$tag}">
-            <xsl:if test="@lang">
-                <xsl:attribute name="lang" select="@lang"/>
-            </xsl:if>
-            <xsl:value-of select="normalize-space(text())"/>
-        </xsl:element>
-    </xsl:template>
-
     <xsl:template name="resources">
         <xsl:param name="title"/>
         <xsl:param name="tag"/>
+        <!-- <xsl:call-template name="resources_list">
+            <xsl:with-param name="title" select="$title"/>
+            <xsl:with-param name="resources" select="s:*[local-name() = $tag]"/>
+        </xsl:call-template> -->
 
         <xsl:variable name="resources" select="s:*[local-name() = $tag]"/>
 
         <xsl:if test="$resources">
             <dt class="col-sm-2"><xsl:value-of select="$title"/></dt>
             <dd class="col-sm-10">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <ul class="mb-0 list-unstyled">
-                            <xsl:for-each select="$resources">
-                                <xsl:if test="position() &lt;= ceiling(count($resources) div 2)">
-                                    <li class="pb-2"><xsl:call-template name="resource"/></li>
-                                </xsl:if>
-                            </xsl:for-each>
-                        </ul>
-                    </div>
-                    <xsl:if test="count($resources) > 1">
+                <div style="margin-left: 30pt;">
+                    <div class="row">
                         <div class="col-sm-6">
-                            <ul class="pb-2 list-unstyled">
+                            <ul class="mb-0 list-unstyled">
                                 <xsl:for-each select="$resources">
-                                    <xsl:if test="position() &gt; ceiling(count($resources) div 2)">
+                                    <xsl:if test="position() &lt;= ceiling(count($resources) div 2)">
                                         <li class="pb-2"><xsl:call-template name="resource"/></li>
                                     </xsl:if>
                                 </xsl:for-each>
                             </ul>
                         </div>
-                    </xsl:if>
+                        <xsl:if test="count($resources) > 1">
+                            <div class="col-sm-6">
+                                <ul class="pb-2 list-unstyled">
+                                    <xsl:for-each select="$resources">
+                                        <xsl:if test="position() &gt; ceiling(count($resources) div 2)">
+                                            <li class="pb-2"><xsl:call-template name="resource"/></li>
+                                        </xsl:if>
+                                    </xsl:for-each>
+                                </ul>
+                            </div>
+                        </xsl:if>
+                    </div>
+                </div>
+            </dd>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="resources_list">
+        <xsl:param name="title"/>
+        <xsl:param name="resources"/>
+
+        <xsl:if test="$resources">
+            <dt class="col-sm-2"><xsl:value-of select="$title"/></dt>
+            <dd class="col-sm-10">
+                <div style="margin-left: 30pt;">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <ul class="mb-0 list-unstyled">
+                                <xsl:for-each select="$resources">
+                                    <xsl:if test="position() &lt;= ceiling(count($resources) div 2)">
+                                        <li class="pb-2"><xsl:call-template name="resource"/></li>
+                                    </xsl:if>
+                                </xsl:for-each>
+                            </ul>
+                        </div>
+                        <xsl:if test="count($resources) > 1">
+                            <div class="col-sm-6">
+                                <ul class="pb-2 list-unstyled">
+                                    <xsl:for-each select="$resources">
+                                        <xsl:if test="position() &gt; ceiling(count($resources) div 2)">
+                                            <li class="pb-2"><xsl:call-template name="resource"/></li>
+                                        </xsl:if>
+                                    </xsl:for-each>
+                                </ul>
+                            </div>
+                        </xsl:if>
+                    </div>
                 </div>
             </dd>
         </xsl:if>
     </xsl:template>
 
     <xsl:template name="resource">
-        <xsl:param name="tag" select="''"/>
-
-        <xsl:variable name="current" select="."/>
+        <xsl:param name="value" select="if (@path) then @path else text()"/>
 
         <xsl:choose>
-            <xsl:when test="starts-with(text(), 'http')">
+            <xsl:when test="starts-with($value, 'http')">
                 <span>
-                    <xsl:value-of select="text()"/>
+                    <xsl:value-of select="$value"/>
                 </span>
             </xsl:when>
             <xsl:otherwise>
-                <a href="{concat($root, text(), '.html')}">
-                    <xsl:value-of select="/s:Skos/s:*[@path = $current][1]/s:PrefLabel[@lang = $lang][1]/text()"/>
+                <a href="{concat($root, $value, '.html')}">
+                    <!-- <xsl:value-of select="//s:*[@path = $value][1]"/> -->
+                    <xsl:value-of select="//s:*[@path = $value][1]/s:PrefLabel[@lang = $lang][1]/text()"/>
                 <br/>
                 <small class="text-muted">
                     <xsl:value-of select="$baseuri"/>
                     <strong>
-                        <xsl:value-of select="text()"/>
+                        <xsl:value-of select="$value"/>
                     </strong>
                 </small>
                 </a>
