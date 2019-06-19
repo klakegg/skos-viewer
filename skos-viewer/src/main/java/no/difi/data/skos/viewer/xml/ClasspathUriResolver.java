@@ -1,7 +1,6 @@
 package no.difi.data.skos.viewer.xml;
 
 import javax.xml.transform.Source;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.URIResolver;
 
 /**
@@ -16,7 +15,7 @@ public class ClasspathUriResolver implements URIResolver {
     }
 
     @Override
-    public Source resolve(String s, String s1) throws TransformerException {
+    public Source resolve(String s, String s1) {
         return SourceUtil.classpath(path + s);
     }
 }

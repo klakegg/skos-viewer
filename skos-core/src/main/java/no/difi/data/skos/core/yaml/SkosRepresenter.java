@@ -1,4 +1,4 @@
-package no.difi.data.skos.viewer.yaml;
+package no.difi.data.skos.core.yaml;
 
 import lombok.extern.slf4j.Slf4j;
 import no.difi.data.skos.model.Concept;

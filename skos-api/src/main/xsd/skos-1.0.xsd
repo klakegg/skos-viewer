@@ -13,9 +13,9 @@
         <xsd:sequence>
             <xsd:element ref="Config" minOccurs="0"/>
             <xsd:choice minOccurs="0" maxOccurs="unbounded">
-                <xsd:element ref="Collection"/>
-                <xsd:element ref="Concept"/>
                 <xsd:element ref="ConceptScheme"/>
+                <xsd:element ref="Concept"/>
+                <xsd:element ref="Collection"/>
             </xsd:choice>
         </xsd:sequence>
     </xsd:complexType>

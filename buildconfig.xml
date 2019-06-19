@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildConfigurations xmlns="http://difi.no/xsd/vefa/validator/1.0">
+
+    <configuration>
+        <identifier>skos-v1</identifier>
+        <title>Skos 1.0</title>
+        <declaration type="xml">urn:fdc:difi.no:2019:data:Skos-1::Skos</declaration>
+        <file source="skos-api/src/main/xsd/skos-1.0.xsd" path="skos-1.0.xsd"/>
+        <file source="skos-viewer/src/main/resources/schematron/skos-1.0.sch" path="skos-1.0.sch"/>
+    </configuration>
+
+</buildConfigurations>

@@ -1,4 +1,4 @@
-package no.difi.data.skos.viewer.module;
+package no.difi.data.skos.core.module;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Module;
@@ -8,7 +8,7 @@ import no.difi.data.skos.model.Collection;
 import no.difi.data.skos.model.Concept;
 import no.difi.data.skos.model.ConceptScheme;
 import no.difi.data.skos.model.Config;
-import no.difi.data.skos.viewer.yaml.SkosRepresenter;
+import no.difi.data.skos.core.yaml.SkosRepresenter;
 import org.kohsuke.MetaInfServices;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.TypeDescription;
