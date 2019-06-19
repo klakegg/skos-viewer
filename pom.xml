@@ -48,7 +48,7 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- Data SKOS -->
+            <!-- SKOS -->
             <dependency>
                 <groupId>no.difi.data</groupId>
                 <artifactId>skos-api</artifactId>

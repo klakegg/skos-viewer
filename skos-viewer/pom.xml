@@ -11,7 +11,10 @@
 
     <artifactId>skos-viewer</artifactId>
 
+    <name>SKOS :: Viewer</name>
+
     <dependencies>
+        <!-- SKOS -->
         <dependency>
             <groupId>no.difi.data</groupId>
             <artifactId>skos-api</artifactId>
@@ -21,11 +24,13 @@
             <artifactId>skos-core</artifactId>
         </dependency>
 
+        <!-- Logging -->
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
         </dependency>
 
+        <!-- Saxon -->
         <dependency>
             <groupId>net.sf.saxon</groupId>
             <artifactId>Saxon-HE</artifactId>

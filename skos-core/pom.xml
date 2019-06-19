@@ -11,17 +11,22 @@
 
     <artifactId>skos-core</artifactId>
 
+    <name>SKOS :: Core</name>
+
     <dependencies>
+        <!-- SKOS -->
         <dependency>
             <groupId>no.difi.data</groupId>
             <artifactId>skos-api</artifactId>
         </dependency>
 
+        <!-- Google Guice -->
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
         </dependency>
 
+        <!-- Logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>

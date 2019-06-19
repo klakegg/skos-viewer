@@ -11,6 +11,8 @@
 
     <artifactId>skos-api</artifactId>
 
+    <name>SKOS :: API</name>
+
     <build>
         <plugins>
             <plugin>

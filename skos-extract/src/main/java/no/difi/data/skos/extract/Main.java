@@ -76,7 +76,8 @@ public class Main {
     public void handle(SkosType skos) throws IOException {
         Path folder = Paths.get(args[1]);
 
-        write(folder.resolve("config.yaml"), converter.convert(skos.getConfig()));
+        if (skos.getConfig() != null)
+            write(folder.resolve("config.yaml"), converter.convert(skos.getConfig()));
 
         for (BaseType baseType : skos.getConceptSchemeOrConceptOrCollection()) {
             Path path = folder.resolve("src").resolve(baseType.getPath() + ".yaml");
