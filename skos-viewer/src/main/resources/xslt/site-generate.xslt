@@ -59,7 +59,7 @@
     </xsl:template>
 
     <xsl:template name="navbar">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow mb-4">
             <div class="container">
                 <a class="navbar-brand" href="{$root}">
                     <xsl:value-of select="$config/s:Name"/>
@@ -488,7 +488,7 @@
         <xsl:choose>
             <xsl:when test="starts-with($value, 'http')">
                 <span>
-                    <xsl:value-of select="$value"/>
+                    <a href="{$value}" rel="nofollow"><xsl:value-of select="$value"/></a>
                 </span>
             </xsl:when>
             <xsl:otherwise>
