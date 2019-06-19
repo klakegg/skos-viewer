@@ -1,4 +1,4 @@
-package no.difi.data.skos.viewer.module;
+package no.difi.data.skos.core.module;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;

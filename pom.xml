@@ -15,6 +15,7 @@
         <module>skos-api</module>
         <module>skos-viewer</module>
         <module>skos-core</module>
+        <module>skos-extract</module>
     </modules>
 
     <properties>

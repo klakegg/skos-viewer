@@ -23,7 +23,7 @@ import java.nio.file.Paths;
  */
 @Info(weight = 25, title = "format source")
 @MetaInfServices
-public class FormatedSourceStep implements Step {
+public class FormattedSourceStep implements Step {
 
     @Inject
     private Processor processor;
@@ -31,7 +31,7 @@ public class FormatedSourceStep implements Step {
     @Override
     public void trigger() throws IOException, SkosException {
         Path sourceFile = Paths.get("target/source.xml");
-        Path targetFile = Paths.get("target/source-formated.xml");
+        Path targetFile = Paths.get("target/site/source.xml");
 
         try {
             XsltExecutable xsltExecutable = processor.newXsltCompiler()
@@ -46,8 +46,5 @@ public class FormatedSourceStep implements Step {
         } catch (SaxonApiException e) {
             throw new SkosException(e.getMessage(), e);
         }
-
-        Files.delete(sourceFile);
-        Files.move(targetFile, sourceFile);
     }
 }

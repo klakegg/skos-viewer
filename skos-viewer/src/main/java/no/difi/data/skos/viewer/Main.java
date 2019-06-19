@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import no.difi.data.skos.lang.SkosException;
 import no.difi.data.skos.viewer.annotation.Info;
 import no.difi.data.skos.viewer.api.Step;
-import no.difi.data.skos.viewer.module.ArgumentsModule;
+import no.difi.data.skos.core.module.ArgumentsModule;
 
 import java.io.IOException;
 import java.util.Comparator;
