@@ -63,6 +63,7 @@ public class Converter {
 
         // Scheme
         source.getInScheme().forEach(target.getScheme()::addIn);
+        source.getTopConceptOf().forEach(target.getScheme()::addTopOf);
 
         // Mapping
         source.getMappingRelation().forEach(target.getMapping()::addMappingRelation);
