@@ -39,5 +39,12 @@
                     test="count(//s:Concept[normalize-space(@path) = $path] | //s:ConceptScheme[normalize-space(@path) = $path] | //s:Collection[normalize-space(@path) = $path]) = 1"
                     flag="fatal">More than one item has path '<value-of select="$path"/>'.</assert>
         </rule>
+
+        <rule context="s:PrefLabel | s:AltLabel | HiddenLabel | s:Note | s:ChangeNote | s:Definition | s:EditorialNote | s:Example | s:HistoryNote | s:ScopeNote">
+            <assert id="SKOS-R005"
+                    test="@lang"
+                    flag="warning"><value-of select="local-name()"/> "<value-of select="text()" />" in '<value-of select="../@path" />' misses language declaration.</assert>
+        </rule>
+
     </pattern>
 </schema>
