@@ -1,5 +1,6 @@
 package no.difi.data.skos.viewer.step;
 
+import com.google.common.io.MoreFiles;
 import com.google.inject.Inject;
 import no.difi.data.skos.model.Config;
 import no.difi.data.skos.model.SkosObject;
@@ -40,8 +41,17 @@ public class CollectingStep implements Step {
 
     @Override
     public void trigger() throws IOException {
+        Path sourcePath = Paths.get("source.xml");
+        Path targetPath = Paths.get("target/source.xml");
+
+        // If source.xml exists, skip rest of step.
+        if (Files.exists(sourcePath)) {
+            Files.copy(sourcePath, targetPath);
+            return;
+        }
+
         // Create source.xml
-        try (OutputStream outputStream = Files.newOutputStream(Paths.get("target/source.xml"));
+        try (OutputStream outputStream = Files.newOutputStream(targetPath);
              SkosWriter writer = new SkosWriter(outputStream, jaxbContext)) {
             // Load config
             if (Files.exists(Paths.get("config.yaml")))
