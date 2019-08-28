@@ -1,7 +1,7 @@
 package no.difi.data.skos.viewer.step;
 
-import com.google.common.io.MoreFiles;
 import com.google.inject.Inject;
+import lombok.extern.slf4j.Slf4j;
 import no.difi.data.skos.model.Config;
 import no.difi.data.skos.model.SkosObject;
 import no.difi.data.skos.viewer.annotation.Info;
@@ -27,6 +27,7 @@ import java.nio.file.Paths;
  */
 @Info(weight = 20, title = "collecting")
 @MetaInfServices
+@Slf4j
 public class CollectingStep implements Step {
 
     @Inject
@@ -46,6 +47,7 @@ public class CollectingStep implements Step {
 
         // If source.xml exists, skip rest of step.
         if (Files.exists(sourcePath)) {
+            log.info("Using \"source.xml\" as source.");
             Files.copy(sourcePath, targetPath);
             return;
         }

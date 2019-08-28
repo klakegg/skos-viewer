@@ -31,5 +31,13 @@
                     test="//s:Concept[@path = $ref] | //s:ConceptScheme[@path = $ref]"
                     flag="fatal">Unable to find concept '<value-of select="text()"/>' referenced in '<value-of select="parent::element()/@path"/>'.</assert>
         </rule>
+
+        <rule context="s:Concept | s:ConceptScheme | s:Collection">
+            <let name="path" value="normalize-space(@path)"/>
+
+            <assert id="SKOS-R004"
+                    test="count(//s:Concept[normalize-space(@path) = $path] | //s:ConceptScheme[normalize-space(@path) = $path] | //s:Collection[normalize-space(@path) = $path]) = 1"
+                    flag="fatal">More than one item has path '<value-of select="$path"/>'.</assert>
+        </rule>
     </pattern>
 </schema>
