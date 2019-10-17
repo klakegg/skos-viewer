@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schema xmlns="http://purl.oclc.org/dsdl/schematron"
-        xmlns:xs="http://www.w3.org/2001/XMLSchema"
         schemaVersion="iso" queryBinding="xslt2">
 
     <title>Skos validation</title>
@@ -43,7 +42,7 @@
         <rule context="s:PrefLabel | s:AltLabel | HiddenLabel">
             <assert id="SKOS-R005"
                     test="@lang"
-                    flag="warning"><value-of select="local-name()"/> "<value-of select="text()" />" in '<value-of select="../@path" />' misses language declaration.</assert>
+                    flag="warning"><value-of select="local-name()"/> "<value-of select="text()"/>" in '<value-of select="../@path"/>' misses language declaration.</assert>
         </rule>
 
         <rule context="s:Note | s:ChangeNote | s:Definition | s:EditorialNote | s:Example | s:HistoryNote | s:ScopeNote">
@@ -52,11 +51,23 @@
 
             <assert id="SKOS-R006"
                     test="@lang"
-                    flag="warning"><value-of select="local-name()"/> "<value-of select="text()" />" in '<value-of select="../@path" />' misses language declaration.</assert>
+                    flag="warning"><value-of select="local-name()"/> "<value-of select="text()"/>" in '<value-of select="../@path"/>' misses language declaration.</assert>
             <assert id="SKOS-R007"
                     test="not(@lang) or count(../*[local-name() = $type][@lang = $lang]) = 1"
-                    flag="warning">Multiple <value-of select="lower-case($type)"/> with language '<value-of select="$lang"/>' in '<value-of select="../@path" />'.</assert>
+                    flag="warning">Multiple <value-of select="lower-case($type)"/> with language '<value-of select="$lang"/>' in '<value-of select="../@path"/>'.</assert>
         </rule>
 
+    </pattern>
+
+    <pattern>
+        <let name="languages" value="distinct-values(//@lang)"/>
+
+        <rule context="s:PrefLabel[1] | s:Note[1] | s:Definition[1] | s:Example[1] | s:HistoryNote[1] | s:ScopeNote[1]">
+            <let name="type" value="local-name()"/>
+
+            <assert id="SKOS-R008"
+                    test="every $lang in $languages satisfies ../*[local-name() = $type][@lang = $lang]"
+                    flag="warning">Incomplete language support for '<value-of select="../@path"/>' in <value-of select="lower-case($type)"/>.</assert>
+        </rule>
     </pattern>
 </schema>
