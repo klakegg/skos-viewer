@@ -40,10 +40,22 @@
                     flag="fatal">More than one item has path '<value-of select="$path"/>'.</assert>
         </rule>
 
-        <rule context="s:PrefLabel | s:AltLabel | HiddenLabel | s:Note | s:ChangeNote | s:Definition | s:EditorialNote | s:Example | s:HistoryNote | s:ScopeNote">
+        <rule context="s:PrefLabel | s:AltLabel | HiddenLabel">
             <assert id="SKOS-R005"
                     test="@lang"
                     flag="warning"><value-of select="local-name()"/> "<value-of select="text()" />" in '<value-of select="../@path" />' misses language declaration.</assert>
+        </rule>
+
+        <rule context="s:Note | s:ChangeNote | s:Definition | s:EditorialNote | s:Example | s:HistoryNote | s:ScopeNote">
+            <let name="type" value="local-name()"/>
+            <let name="lang" value="@lang"/>
+
+            <assert id="SKOS-R006"
+                    test="@lang"
+                    flag="warning"><value-of select="local-name()"/> "<value-of select="text()" />" in '<value-of select="../@path" />' misses language declaration.</assert>
+            <assert id="SKOS-R007"
+                    test="not(@lang) or count(../*[local-name() = $type][@lang = $lang]) = 1"
+                    flag="warning">Multiple <value-of select="lower-case($type)"/> with language '<value-of select="$lang"/>' in '<value-of select="../@path" />'.</assert>
         </rule>
 
     </pattern>
