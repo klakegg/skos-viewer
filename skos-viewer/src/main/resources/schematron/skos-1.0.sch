@@ -60,13 +60,22 @@
     </pattern>
 
     <pattern>
-        <let name="languages" value="distinct-values(//@lang)"/>
+        <let name="languages_all" value="distinct-values(//@lang)"/>
+        <let name="languages_no" value="tokenize('nb nn', '\s')"/>
 
-        <rule context="s:PrefLabel[1] | s:Note[1] | s:Definition[1] | s:Example[1] | s:HistoryNote[1] | s:ScopeNote[1]">
+        <rule context="s:PrefLabel[1]">
             <let name="type" value="local-name()"/>
 
             <assert id="SKOS-R008"
-                    test="every $lang in $languages satisfies ../*[local-name() = $type][@lang = $lang]"
+                    test="every $lang in $languages_all satisfies ../*[local-name() = $type][@lang = $lang]"
+                    flag="warning">Incomplete language support for '<value-of select="../@path"/>' in <value-of select="lower-case($type)"/>.</assert>
+        </rule>
+
+        <rule context="s:Note[1] | s:Definition[1] | s:Example[1] | s:HistoryNote[1] | s:ScopeNote[1]">
+            <let name="type" value="local-name()"/>
+
+            <assert id="SKOS-R009"
+                    test="every $lang in $languages_no satisfies ../*[local-name() = $type][@lang = $lang]"
                     flag="warning">Incomplete language support for '<value-of select="../@path"/>' in <value-of select="lower-case($type)"/>.</assert>
         </rule>
     </pattern>
