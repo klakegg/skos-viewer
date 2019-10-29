@@ -12,7 +12,7 @@
             <xsl:copy-of select="s:Config"/>
             <xsl:apply-templates select="s:ConceptScheme"/>
             <xsl:apply-templates select="s:Concept"/>
-            <xsl:copy-of select="s:Collection"/>
+            <xsl:apply-templates select="s:Collection"/>
         </Skos>
     </xsl:template>
 
@@ -81,6 +81,13 @@
 
             <xsl:copy-of select="s:MappingRelation | s:CloseMatch | s:ExactMatch | s:BroadMatch | s:NarrowMatch | s:RelatedMatch"/>
         </Concept>
+    </xsl:template>
+
+    <xsl:template match="s:Collection">
+        <Collection path="{@path}">
+            <xsl:copy-of select="s:PrefLabel | s:AltLabel | s:HiddenLabel"/>
+            <xsl:copy-of select="s:Member"/>
+        </Collection>
     </xsl:template>
 
 </xsl:stylesheet>
