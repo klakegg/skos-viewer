@@ -47,7 +47,7 @@ public class ViewsStep implements Step {
             try {
                 XsltExecutable xsltExecutable = processor.newXsltCompiler().compile(SourceUtil.path(path));
 
-                Path targetFile = Paths.get(String.format("target/%s/index.html", path.toString().replaceAll(".xslt", "")));
+                Path targetFile = Paths.get(String.format("target/site/%s/index.html", path.toString().replaceAll(".xslt", "")));
                 Files.createDirectories(targetFile.getParent());
 
                 try (InputStream inputStream = Files.newInputStream(Paths.get("target/populated.xml"))) {
