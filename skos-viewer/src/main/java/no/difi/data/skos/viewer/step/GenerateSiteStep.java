@@ -28,6 +28,7 @@ public class GenerateSiteStep implements Step {
     @Inject
     private Processor processor;
 
+    @SuppressWarnings("Duplicates")
     @Override
     public void trigger() throws IOException, SkosException {
         try {

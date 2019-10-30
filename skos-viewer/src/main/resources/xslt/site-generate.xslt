@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="2.0"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:s="urn:fdc:difi.no:2019:data:Skos-1"
-                exclude-result-prefixes="s">
+                exclude-result-prefixes="s"
+                version="2.0">
 
     <xsl:output method="html" version="5.0" encoding="UTF-8" indent="yes" />
 
