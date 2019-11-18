@@ -29,11 +29,15 @@
 
         <xsl:variable name="schemes" select="$root/s:ConceptScheme[some $path in $washed//s:InScheme/text() satisfies $path = @path]"/>
 
+        <xsl:variable name="complete" select="$washed/s:Concept | $schemes"/>
+
         <xsl:variable name="result">
             <Skos>
-                <xsl:for-each select="$washed/s:Concept | $schemes">
-                    <xsl:sort select="@path"/>
-                    <xsl:copy-of select="current()"/>
+                <xsl:for-each select="distinct-values($complete/@path)">
+                    <xsl:sort/>
+                    <xsl:variable name="current" select="current()"/>
+
+                    <xsl:copy-of select="$complete[@path = $current][1]"/>
                 </xsl:for-each>
             </Skos>
         </xsl:variable>
