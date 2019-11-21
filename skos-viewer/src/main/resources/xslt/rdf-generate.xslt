@@ -267,7 +267,7 @@
 
         <xsl:element name="skos:{$tag}">
             <xsl:if test="@lang">
-                <xsl:attribute name="lang" select="@lang"/>
+                <xsl:attribute name="xml:lang" select="@lang"/>
             </xsl:if>
             <xsl:value-of select="normalize-space(text())"/>
         </xsl:element>
